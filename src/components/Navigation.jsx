@@ -12,9 +12,9 @@ const navItems = [
     { name: "Акции", path: "/actions" },
     { name: "Сборка", path: "/assembling" },
     { name: "Оплата", path: "/payment" },
-    { name: "Доставка", path: "/dalivery" },
+    { name: "Доставка", path: "/delivery" },
     { name: "Наши рабты", path: "/work" },
-    { name: "Контакты", path: "contacts" },
+    { name: "Контакты", path: "/contacts" },
 ];
 /**
  * Компонент Navigation отображает навигационное меню с пунктами,
