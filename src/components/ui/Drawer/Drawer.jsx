@@ -1,7 +1,7 @@
 import React, { useEffect, usrRef, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { LiaTimesSolid } from "react-icons/lia";
-import Basket from "../Basket";
+// import Basket from "../Basket";
 
 /**
  * Компонент выдвигающейся паненли. 
