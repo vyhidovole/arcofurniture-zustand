@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Image from "next/image";
-import classNames from "classnames";
+
 /**
  * Модальное окно для отображения схемы проезда. 
  * 
@@ -15,7 +15,7 @@ const Modal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;// Если модальное окно закрыто, ни чего не рендерим. 
     const handleClickOutside = (event) => {
         // Проверяем что клик был по фону модального окна
-        if (event.target.classList.contains('bg-black')) {
+        if (event.target.classList.contains('bg-black/50')) {
             return onClose()
         }
     };
@@ -30,7 +30,7 @@ const Modal = ({ isOpen, onClose }) => {
     }, []);//Пустой массив зависимостей, что бы эффект выполнялся только при монтировании и размонтиовании
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10">
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-10">
             <div className=" bg-white p-4 rounded shadow-lg w-3/4 h-5/6 flex flex-col ">
                 {/* Заголовок модального окна */}
                 <div className="flex justify-between items-center mb-4">
