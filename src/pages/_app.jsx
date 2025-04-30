@@ -1,4 +1,3 @@
-import "@/styles/globals.css";
 import React from "react";
 import MainLayout from "../Layouts/MainLayout";
 import { LoadingProvider } from '@/context/LoadingContext';
