@@ -11,10 +11,10 @@ import ModalCall from "@/components/ui/Modal/ModalCall"; // Импортируе
 import ModalEntry from "@/components/ui/Modal/ModalEntry";// Импортируем диалоговое окно
 import { useRouter } from 'next/router';
 import { Drawer } from "@/components/ui/Drawer/Drawer";
-import '@/components/Header.css';
 import BurgerButton from "@/components/ui/BurgerButton";
 import { BurgerMenu } from "@/components/ui/BurgerMenu";
 import SearchInput from "@/components/ui/Input/SearchInput";
+import '@/components/Header.css';
 
 
 
