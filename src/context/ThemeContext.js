@@ -19,7 +19,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 export const ThemeContext = createContext();
 //Провайдер для контекста
 export const ThemeProvider = ({ children }) => {
-    const [isDarkMode, setIsDarklMode] = useState(() => {
+    const [isDarkMode, setIsDarkMode] = useState(() => {
         //Проверяем есть ли доступ к localStorage
         if (typeof window !== 'undefined') {
             const savedTheme = localStorage.getItem('isDarkMode');
@@ -31,8 +31,8 @@ export const ThemeProvider = ({ children }) => {
      * Переключает режим темы между светлым и темным.
      * Обновляет состояние и сохраняет новое значение в localStorage.
      */
-    const toggleThme = () => {
-        setIsDarklMode((prevMode) => {
+    const toggleTheme = () => {
+        setIsDarkMode((prevMode) => {
             const newMode = !prevMode;//Переключаем режим
             if (typeof window !== 'undefined') {
                 localStorage.setItem('isDarkMode', newMode);//Сохраняем новое значение в localStorage
@@ -52,7 +52,7 @@ export const ThemeProvider = ({ children }) => {
     },[isDarkMode])
 
     return (
-        <ThemeContext.Provider value={{isDarkMode,toggleThme}}>
+        <ThemeContext.Provider value={{isDarkMode,toggleTheme}}>
             {children}
         </ThemeContext.Provider>
     )
