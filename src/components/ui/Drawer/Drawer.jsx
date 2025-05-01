@@ -1,7 +1,9 @@
-import React, { useEffect, usrRef, useCallback, useRef } from "react";
+import React, { useEffect,  useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { LiaTimesSolid } from "react-icons/lia";
-// import Basket from "../Basket";
+import Basket from "../Basket";
+
+
 
 /**
  * Компонент выдвигающейся паненли. 
@@ -38,7 +40,7 @@ export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
      * Добавляет или удаляет обработчик клика вне панели при открытии или закрытии панели. 
      */
     useEffect(() => {
-        document.addEventListener("mousedon", handleClick);
+        document.addEventListener("mousedown", handleClick);
         return () => {
             document.removeEventListener("mousedown", handleClick);
         };
@@ -47,7 +49,7 @@ export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
     return (
         isOpen &&
         createPortal(
-            <div className="fixed w-full h-full top-0 left-0 right-0 bottom-0 bg-opacity-50 bg-black">
+            <div className="fixed w-full h-full top-0 left-0 right-0 bottom-0  bg-black/50">
                 <aside ref={drawerRef}
                     className={`absolute max-h-full h-full w-96 p-8 bg-gray-300 transition-transform duration-300 ease-in-out overflow-y-auto`}
                 >
