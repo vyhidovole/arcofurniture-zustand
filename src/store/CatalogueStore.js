@@ -10,6 +10,7 @@ const useCatalogueStore = create((set, get) => ({
     basket: [], // Корзина
     // Количество выбранных товаров
     quantity: 0,
+    
     // Асинхронная функция для получения данных о продуктах по URL
     getProducts: async (url) => {
         try {
@@ -72,7 +73,7 @@ const useCatalogueStore = create((set, get) => ({
         get().updateCount();
         get().saveToLocalStorage();
     },
-   
+
     loadFromLocalStorage: () => {
         const data = localStorage.getItem('basket');
         if (data) {
@@ -93,6 +94,8 @@ const useCatalogueStore = create((set, get) => ({
             };
         });
     },
+
+
     // Метод для увеличения количества товара
     incrementProductQuantity: (productId) => set((state) => {
         const basket = state.basket.map(item => {
@@ -102,7 +105,8 @@ const useCatalogueStore = create((set, get) => ({
             return item;
         });
         // Обновляем состояние с новым массивом корзины
-        return { basket, count: updateCount() }
+        get().updateCount();
+        return { basket };
     }),
 
     /**
@@ -142,51 +146,51 @@ const useCatalogueStore = create((set, get) => ({
         get().updateCount();
         console.log("Количество товара уменьшено");
     },
+
     // Обновление количества товаров в корзине
-  updateCount: () => {
-    const totalQuantity = get().basket.reduce((total, product) => total + product.quantity, 0);
-    set({ quantity: totalQuantity });
-    console.log("Обновлено количество товаров в корзине:", totalQuantity);
-  },
+    updateCount: () => {
+        const totalQuantity = get().basket.reduce((total, product) => total + product.quantity, 0);
+        set({ count: totalQuantity });
+        console.log("Обновлено количество товаров в корзине:", totalQuantity);
+    },
+    // Сохраняет корзину и количество товаров в localStorage
+    saveToLocalStorage: () => {
+        try {
+            if (typeof window !== 'undefined') {
+                const { basket, quantity } = get();
+                localStorage.setItem("basket", JSON.stringify(basket));
+                localStorage.setItem("quantity", quantity.toString());
+                console.log("Сохранено в localStorage:", basket, quantity);
+            }
+        } catch (error) {
+            console.error("Ошибка при сохранении в localStorage:", error);
+        }
+    },
+    // Инициализация корзины из localStorage
+    initializeBasket: () => {
+        if (typeof window !== 'undefined') { // Проверяем, что код выполняется в браузере
+            const savedBasket = JSON.parse(localStorage.getItem("basket")) || [];
+            set({ basket: savedBasket });
+            get().updateCount();
+            console.log("Корзина инициализирована:", savedBasket); // Отладочное сообщение
+        } else {
+            console.warn("localStorage недоступен, инициализация корзины не выполнена.");
+        }
+    },
+    // Удаление товара по id
+    clearProduct: (id) => {
+        const newBasket = get().basket.filter(item => item.id !== id);
+        set({ basket: newBasket });
+        get().updateCount();
+        console.log("Корзина очищена");
+        // Также можно обновлять localStorage
+        if (typeof window !== 'undefined') {
+            localStorage.setItem("basket", JSON.stringify(newBasket));
+        }
 
-  // Сохраняет корзину и количество товаров в localStorage
-  saveToLocalStorage: () => {
-    try {
-      if (typeof window !== 'undefined') {
-        const { basket, quantity } = get();
-        localStorage.setItem("basket", JSON.stringify(basket));
-        localStorage.setItem("quantity", quantity.toString());
-        console.log("Сохранено в localStorage:", basket, quantity);
-      }
-    } catch (error) {
-      console.error("Ошибка при сохранении в localStorage:", error);
-    }
-  },
-   // Инициализация корзины из localStorage
-   initializeBasket: () => {
-    if (typeof window !== 'undefined') { // Проверяем, что код выполняется в браузере
-      const savedBasket = JSON.parse(localStorage.getItem("basket")) || [];
-      set({ basket: savedBasket });
-      get().updateCount();
-      console.log("Корзина инициализирована:", savedBasket); // Отладочное сообщение
-    } else {
-      console.warn("localStorage недоступен, инициализация корзины не выполнена.");
-    }
-  },
-   // Удаление товара по id
-   clearProduct: (id) => {
-    const newBasket = get().basket.filter(item => item.id !== id);
-    set({ basket: newBasket });
-    get().updateCount();
-    console.log("Корзина очищена");
-    // Также можно обновлять localStorage
-    if (typeof window !== 'undefined') {
-      localStorage.setItem("basket", JSON.stringify(newBasket));
-    }
-    
 
-  }
-  
+    }
+
 }))
 
 
