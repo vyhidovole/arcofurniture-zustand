@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { VscTrash } from "react-icons/vsc";
-import catalogueStore from "@/store/CatalogueStore"; 
-import { useCart } from '@/context/CartContext'; 
 import useCatalogueStore from "@/store/CatalogueStore";
+import { useCart } from '@/context/CartContext';
+
 
 const Product = ({ item }) => {
-    const catalogueStore = useCatalogueStore();
-  const {  addToCart, removeFromCart,deleteProduct } = useCart(); // Используем контекст
+  const catalogueStore = useCatalogueStore();
+
+  const { addToCart, removeFromCart, deleteProduct } = useCart(); // Используем контекст
   useEffect(() => {
     catalogueStore.initializeBasket(); // Инициализация корзины после монтирования
   }, []);
@@ -27,7 +28,7 @@ const Product = ({ item }) => {
   const handleDeleteProduct = () => {
     deleteProduct(quantity); // Вызываем deleteProduct из контекста
     catalogueStore.clearProduct(id); // Также вызываем метод из store для удаления товара
-};
+  };
   const numericPrice = parseFloat(price); // Преобразуем в число
 
   const total = (numericPrice * catalogueStore.basket.find(product => product.id === id)?.quantity || 0).toFixed(2);
@@ -69,20 +70,20 @@ const Product = ({ item }) => {
         <div className="product-buttons flex items-center w-18 mx-auto"> {/* Flex для кнопок увеличения/уменьшения */}
           <button
             className="product-sub bg-red-500 text-white font-bold py-1 px-2 rounded hover:bg-red-600 disabled:bg-gray-300"
-            onClick={handleDecrement}
+            onClick={handleDecrement}// Вызываем функцию удаления продукта
             disabled={quantity === 1}
           >
             -
           </button>
           <h3 className="product-count mx-2 w-8 text-center">{quantity}</h3> {/* Отступ между кнопками и счетчиком */}
           <button className="product-add bg-green-500 text-white font-bold py-1 px-2 rounded hover:bg-green-600"
-            // onClick={handleIncrement}
-            onClick={handleIncrement} // Вызываем функцию удаления продукта
+
+            onClick={handleIncrement} // Вызываем функцию прибавления продукта
           >
             +
           </button>
         </div>
-        <button 
+        <button
           className="mt-2 bg-gray-300 text-gray-800 font-bold py-1 px-2 rounded hover:bg-gray-400" // Отступ сверху для кнопки удаления
           // onClick={() => catalogueStore.clearProduct(id)}
           onClick={handleDeleteProduct}

@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import catalogueStore from "@/store/CatalogueStore"; // Импортируйте ваше MobX хранилище
 import Product from "./Product/Product";
 import useCatalogueStore from "@/store/CatalogueStore";
 
 /**
  * Компонент для отображения корзины покупок.
  *
- * Этот компонент использует MobX для управления состоянием корзины.
+ * Этот компонент использует Zustand для управления состоянием корзины.
  * При монтировании компонента корзина инициализируется, загружаются
  * сохраненные товары из localStorage, а также корзина сохраняется
  * в localStorage при изменении.
