@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import Alert from "../Alert/Alert";
+import { useTheme } from '@/context/ThemeContext';
 import useForm from "@/hooks/useForm";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
@@ -29,6 +30,7 @@ import Button from "../Button/Button";
  */
 
 const ModalCall = ({ isOpen, onClose, setNewForm }) => {
+    const { isDarkMode } = useTheme(); // Получаем доступ к теме
     const { formData, errors, handleChange, handleSubmit, resetForm } = useForm(
         {
             name: "",
@@ -103,7 +105,7 @@ const ModalCall = ({ isOpen, onClose, setNewForm }) => {
         >
             <dialog ref={dialogRef} className="rounded-xl">
                 <form onSubmit={handleFormSubmit} method="dialog" >
-                    <div className="bg-white p-4  shadow-lg w-72 h-96 flex flex-col " onClick={(e) => e.stopPropagation()}>{/* Останавливаем всплытие клика на модалке */}
+                    <div className={` p-4  shadow-lg w-72 h-96 flex flex-col ${isDarkMode?'dark-mode bg-gray-800':'light-mode bg-white'}`} onClick={(e) => e.stopPropagation()}>{/* Останавливаем всплытие клика на модалке */}
                         {/* Заголовок Модального окна */}
                         <div className="flex justify-between items-center bottom-4 ">
                             <h3 className="font-bold">Заказать звонок</h3>
@@ -163,7 +165,9 @@ const ModalCall = ({ isOpen, onClose, setNewForm }) => {
                             
                             <Button
                                 type="submit"
-                                variant="secondary">
+                                variant="secondary"
+                                className="mt-4 text-gray-600"
+                                >
                                 Отправить
                             </Button>
 
@@ -176,7 +180,7 @@ const ModalCall = ({ isOpen, onClose, setNewForm }) => {
                                     {alertMessage}
                                 </Alert>
                             )}
-                            <p className="text-xs text-center mt-6">Отправляя форму, я даю свое согласие на  обработку моих персональных данных.
+                            <p className={`text-xs text-center mt-6 ${isDarkMode?'text-white' : 'text-black'}`}>Отправляя форму, я даю свое согласие на  обработку моих персональных данных.
                             </p>
                         </div>
 

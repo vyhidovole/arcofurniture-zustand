@@ -124,10 +124,10 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
             className={`fixed inset-0 bg-black/50 flex justify-center z-10 items-center ${show ? "block" : "hidden"}`}
             onClick={handleBackgroundClick} // Добавляем обработчик клика
         >
-            <dialog ref={dialogRef} className="rounded-xl">
+            <dialog ref={dialogRef} >
                 <form onSubmit={handleFormSubmit} method="dialog">
                     <div
-                        className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} p-4 shadow-lg w-11/12 md:w-3/4 lg:w-72 h-auto flex flex-col`}
+                        className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} p-4 shadow-lg w-11/12 md:w-3/4 lg:w-72 h-auto flex flex-col rounded-xs`}
                         onClick={(e) => e.stopPropagation()} // Останавливаем всплытие клика на модалке
                     >
                         {/* Заголовок Модального окна */}
@@ -167,7 +167,7 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
                             error={errors.password}
                         />
                         <Link href="/forgot-password" className="mt-6 cursor-pointer" onClick={onClose}>
-                            <p>Забыли пароль?</p>
+                            <p className={`${isDarkMode? 'dark-mode text-gray-500':'light-mode text-black'}`} >Забыли пароль?</p>
                         </Link>
 
                         <Button
@@ -175,6 +175,8 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
                             variant="secondary"
                             disabled={!isFormValid} // Делаем кнопку недоступной, если форма не валидна
                             isLoading={isLoading} // Передаём состояние загрузки
+                            className={`${isDarkMode? 'dark-mode text-gray-500':'light-mode text-black'}`}
+                            
                         >
                             Отправить
                         </Button>

@@ -101,7 +101,7 @@ const Header = () => {
     fetchData();
   }, [setLoading]);
 
-  return (<div className="container flex justify-between pt-4">
+  return (<div className={`container flex justify-between pt-4 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
     <BurgerButton onClick={handleOpenBurger} />
     <BurgerMenu isOpen={isBurgerOpen} onClose={handleCloseBurger} titleBurger="меню" />
     {loading ? (
@@ -242,9 +242,9 @@ const Header = () => {
       </div>
     </div>
 
-    <Modal isOpen={isModalOpen} onClose={handleCloseModal} /> {/* Добавляем модальное окно */}
-    <ModalCall isOpen={isCallModalOpen} onClose={closeCallDialog} />{/* Добавляем модальное окно */}
-    <ModalEntry show={isEntryModalOpen} onClose={closeEntryDialog} />{/*Добавляем модальное окно*/}
+    <Modal isOpen={isModalOpen} onClose={handleCloseModal}isDarkMode={isDarkMode} /> {/* Добавляем модальное окно */}
+    <ModalCall isOpen={isCallModalOpen} onClose={closeCallDialog}isDarkMode={isDarkMode} />{/* Добавляем модальное окно */}
+    <ModalEntry show={isEntryModalOpen} onClose={closeEntryDialog}isDarkMode={isDarkMode} />{/*Добавляем модальное окно*/}
     <Drawer isOpen={isDrowerOpen} onClose={handleCloseDrower} isDarkMode={isDarkMode} titleDrawer="корзина">
       <p>Добвленные товары</p>
     </Drawer>{/* Добавляем корзину товаров */}

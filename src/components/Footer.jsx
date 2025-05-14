@@ -1,4 +1,5 @@
 import React,{useEffect} from "react";
+import { useTheme } from '@/context/ThemeContext';
 import Image from "next/image";
 import { useLoading } from '@/context/LoadingContext'; // Импортируем контекст загрузки
 import Skeleton from 'react-loading-skeleton'; // Импортируем скелетон
@@ -18,6 +19,7 @@ import 'react-loading-skeleton/dist/skeleton.css'; // Импортируем с�
  * <Footer />
  */
 const Footer = () => {
+     const { isDarkMode } = useTheme(); // Получаем доступ к теме
     const { loading, setLoading } = useLoading(); // Получаем состояние загрузки
     useEffect(() => {
         const fetchData = async () => {
@@ -35,7 +37,7 @@ const Footer = () => {
       <Skeleton height="auto" width="100%" /> // Скелетон для логотипа
     ) : (
         <footer 
-        className="bg-blue-950 px-0 pt-16 pb-6 mt-14 w-full">
+        className={`bg-blue-950 px-0 pt-16 pb-6 mt-14 w-full ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
             <div
              className="container footer-flex flex justify-around items-start ">
 

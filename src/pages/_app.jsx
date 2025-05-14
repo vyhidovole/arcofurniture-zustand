@@ -1,9 +1,29 @@
-import React from "react";
-import MainLayout from "../Layouts/MainLayout";
-import { LoadingProvider } from '@/context/LoadingContext';
-import { ThemeProvider } from '@/context/ThemeContext'; 
-import { CartProvider } from '@/context/CartContext';
+import React, { useEffect } from "react";
 import "@/styles/globals.css";
+import MainLayout from "@/Layouts/MainLayout";
+import { LoadingProvider } from '@/context/LoadingContext';
+import { ThemeProvider , useTheme } from '@/context/ThemeContext'; 
+import { CartProvider } from '@/context/CartContext';
+
+/**
+ * Компонент для управления темой приложения.
+ */
+const ThemeManager = () => {
+  const { isDarkMode } = useTheme();
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.classList.add('dark-mode');
+      document.body.classList.remove('light-mode');
+    } else {
+      document.body.classList.add('light-mode');
+      document.body.classList.remove('dark-mode');
+    }
+  }, [isDarkMode]);
+
+  return null; // Этот компонент ничего не рендерит
+};
+
 
 /**
  * Корневой элемент страницы.
@@ -24,6 +44,7 @@ const App = ({ Component, pageProps }) => {
     <LoadingProvider>
       <ThemeProvider>
       <CartProvider>
+         <ThemeManager /> 
         <MainLayout>
           <Component {...pageProps} />
         </MainLayout>

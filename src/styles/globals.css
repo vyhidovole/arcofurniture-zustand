@@ -12,9 +12,19 @@
     --foreground: #ededed;
   }
 }
+.dark-mode {
+  --background: #0a0a0a; /* Темный фон */
+  --foreground: #ededed; /* Светлый текст */
+}
+
+.light-mode {
+  --background: #ffffff; /* Светлый фон */
+  --foreground: #171717; /* Темный текст */
+}
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
