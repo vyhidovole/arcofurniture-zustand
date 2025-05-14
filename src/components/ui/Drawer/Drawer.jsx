@@ -1,4 +1,5 @@
-import React, { useEffect,  useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
+import { useTheme } from '@/context/ThemeContext';
 import { createPortal } from "react-dom";
 import { LiaTimesSolid } from "react-icons/lia";
 import Basket from "../Basket";
@@ -14,6 +15,7 @@ import Basket from "../Basket";
  * @param {string} props.titleDrawer - Заголовок панели. 
  */
 export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
+    const { isDarkMode } = useTheme(); // Получаем доступ к теме
     const drawerRef = useRef(null);
     /**
      * Функция для закрытия панели. 
@@ -51,7 +53,8 @@ export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
         createPortal(
             <div className="fixed w-full h-full top-0 left-0 right-0 bottom-0  bg-black/50">
                 <aside ref={drawerRef}
-                    className={`absolute max-h-full h-full w-96 p-8 bg-gray-300 transition-transform duration-300 ease-in-out overflow-y-auto`}
+                    className={`absolute max-h-full h-full w-96 p-8  transition-transform
+                        duration-300 ease-in-out overflow-y-auto ${isDarkMode ? 'dark-mode bg-gray-900' : 'light-mode bg-gray-300'}`}
                 >
                     <header className="flex justify-between mb-4">
                         <h2 className="text-xl font-bolt">{titleDrawer}</h2>
