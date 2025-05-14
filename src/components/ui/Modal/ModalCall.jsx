@@ -108,7 +108,7 @@ const ModalCall = ({ isOpen, onClose, setNewForm }) => {
                     <div className={` p-4  shadow-lg w-72 h-96 flex flex-col ${isDarkMode?'dark-mode bg-gray-800':'light-mode bg-white'}`} onClick={(e) => e.stopPropagation()}>{/* Останавливаем всплытие клика на модалке */}
                         {/* Заголовок Модального окна */}
                         <div className="flex justify-between items-center bottom-4 ">
-                            <h3 className="font-bold">Заказать звонок</h3>
+                            <h3 className={`font-bold ${isDarkMode?'dark-mode text-white':'light-mode text-black'}`}>Заказать звонок</h3>
                             <button type="button"
                                 onClick={handleClose}
                                 className="border-gray-300 rounded-xl">
