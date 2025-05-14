@@ -96,7 +96,7 @@ const Navigation = () => {
                   onClick={() => onClickHandler(item.name, item.path)}
                   className={`nav-link cursor-pointer 
                   ${item.name === activeLink ? "text-sky-500 underline-animation " : "text-gray-800"
-                    }`}
+                    }${isDarkMode ? 'dark:text-sky-500' : 'text-gray-800'}`}
                   key={item.path}
                 >
                   {item.name}
