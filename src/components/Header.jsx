@@ -187,7 +187,7 @@ const Header = () => {
 
       </button>
 
-      <Link href="FavoritePage" className="mt-1">
+      <Link href="favorite-page" className="mt-1">
         {loading ? (
           <div className="round-skeleton mr-2"></div>
 
