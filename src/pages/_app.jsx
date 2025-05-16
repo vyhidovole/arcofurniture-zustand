@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import "@/styles/globals.css";
 import MainLayout from "@/Layouts/MainLayout";
 import { LoadingProvider } from '@/context/LoadingContext';
+import MenuBar from "@/components/ui/MenuBar";
 import { ThemeProvider , useTheme } from '@/context/ThemeContext'; 
 import { CartProvider } from '@/context/CartContext';
 
@@ -46,6 +47,7 @@ const App = ({ Component, pageProps }) => {
       <CartProvider>
          <ThemeManager /> 
         <MainLayout>
+           <MenuBar />
           <Component {...pageProps} />
         </MainLayout>
         </CartProvider>
