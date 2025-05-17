@@ -51,7 +51,7 @@ export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
     return (
         isOpen &&
         createPortal(
-            <div className="fixed w-full h-full top-0 left-0 right-0 bottom-0  bg-black/50">
+            <div className="fixed w-full h-full top-0 left-0 right-0 bottom-0  bg-black/50 z-50">
                 <aside ref={drawerRef}
                     className={`absolute max-h-full h-full w-96 p-8  transition-transform
                         duration-300 ease-in-out overflow-y-auto ${isDarkMode ? 'dark-mode bg-gray-900' : 'light-mode bg-gray-300'}`}
