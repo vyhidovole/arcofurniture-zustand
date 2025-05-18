@@ -37,7 +37,7 @@ const Contacts = () => {
                 <Skeleton height={400} width="100%" /> // Скелетон для логотипа
             ) : (<div>
                 <h2 className="text-5xl">Связаться с нами</h2>
-                <div className="container flex justify-between items-center" style={{ marginTop: '5rem' }}>
+                <div className="container flex justify-around items-center" style={{ marginTop: '5rem' }}>
                     <div className="flex items-center">
                         <div className="p-3 hover:bg-emerald-300 rounded-md"><CiLocationOn /></div>
 
