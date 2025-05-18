@@ -12,7 +12,7 @@ const DropdownBaby = () => {
             <div>
                 <button
                     onClick={toggleMenu}
-                    className='outline-transparent hover:cursor-pointer text-2xl font-medium'
+                    className='outline-transparent hover:cursor-pointer text-lg font-medium'
                 >
                     детские
 
