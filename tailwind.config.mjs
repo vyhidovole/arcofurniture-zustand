@@ -9,6 +9,7 @@ const config = {
       ],
       theme: {
         extend: {
+           
           colors: {
             sky: {
               500: '#0ea5e9', // ваш цвет для sky-500
