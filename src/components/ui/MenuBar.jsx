@@ -46,13 +46,13 @@ const MenuBar = () => {
             // Если данные загружены, показываем компоненты Dropdown
             <div className="flex justify-around w-3/4">
                 <Dropdown />
-                <DropdownBaby/>
-                <DropdownBedroom/>
-                <DropdownCouch/>
-                <DropdownCupboard/>
-                <DropdownLiving/>
-                <DropdownLobby/>
-                <Link href="/" className="text-2xl font-medium">каталог</Link>
+                <DropdownBaby />
+                <DropdownBedroom />
+                <DropdownCouch />
+                <DropdownCupboard />
+                <DropdownLiving />
+                <DropdownLobby />
+                <Link href="/" className="text-lg font-bold">каталог</Link>
                </div>
         )}
     </div>
