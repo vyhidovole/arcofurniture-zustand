@@ -51,6 +51,12 @@
     background-color: #e0e0e0; /* Цвет фона для скелетона */
     animation: pulse 1.5s infinite; /* Добавьте анимацию, если нужно */
   }
+
+  .container_nav {
+  width: 1430px;
+  margin: 0 auto;
+  
+}
   
   @keyframes pulse {
     0% {
