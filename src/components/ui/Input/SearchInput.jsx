@@ -3,6 +3,7 @@ import Link from "next/link";
 import Skeleton from 'react-loading-skeleton'; // Импортируем Skeleton для индикации загрузки
 import 'react-loading-skeleton/dist/skeleton.css'; // Импортируем стили для Skeleton
 import { useLoading } from '@/context/LoadingContext'; // Импорт кастомного хука
+import{useTheme} from '@/context/ThemeContext';
 
 /**
  * Компонент поля поиска для каталога товаров.
@@ -19,6 +20,7 @@ import { useLoading } from '@/context/LoadingContext'; // Импорт каст�
  * );
  */
 const SearchInput = () => {
+    const {isDarkMode} = useTheme
     // Инициализируем состояние для хранения введённого текста в поле поиска
     const [searchTerm, setSearchTerm] = useState('');
     const { loading } = useLoading(); // Получаем состояние загрузки из useLoading
@@ -40,6 +42,8 @@ const SearchInput = () => {
         // Обновляем состояние searchTerm с новым значением из поля ввода
         setSearchTerm(event.target.value);
     };
+    // Функция для очистки поля поиска
+    const reSetSearch = () => setSearchTerm("")
 
     // Фильтруем элементы на основе введённого текста
     const filteredItems = items.filter(item =>
@@ -60,17 +64,17 @@ const SearchInput = () => {
                         className="hidden lg:block lg:border rounded p-1 w-full"
                     />
                     {searchTerm && ( // Показываем список только если есть текст в поле поиска
-                        <ul className="lg:absolute left-0 right-0 bg-white border border-gray-300 z-10 mt-1 rounded shadow-lg">
+                        <ul className="lg:absolute left-0 right-0  border border-gray-300 z-10 mt-1 rounded shadow-lg">
                             {filteredItems.length > 0 ? ( // Проверяем, есть ли отфильтрованные элементы
                                 filteredItems.map((item, index) => ( // Проходим по отфильтрованным элементам
-                                    <li key={index} className="p-2 hover:bg-gray-200 cursor-pointer">
-                                        <Link href={item.path} className="block w-full h-full"> {/* Ссылка на страницу по пути */}
+                                    <li key={index} className={`p-2 hover:bg-gray-200 cursor-pointer ${isDarkMode?'bg-gray-700':'bg-gray-100'}`}>
+                                        <Link href={item.path} className="block w-full h-full" onClick={reSetSearch}> {/* Ссылка на страницу по пути */}
                                             {item.name} {/* Название элемента */}
                                         </Link>
                                     </li>
                                 ))
                             ) : (
-                                <li className="p-2">Ничего не найдено</li>
+                                <li className={`p-2 ${isDarkMode?'bg-gray-700':'bg-gray-100'}`}>Ничего не найдено</li>
                             )}
                         </ul>
                     )}
