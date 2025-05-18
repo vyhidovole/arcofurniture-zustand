@@ -101,7 +101,7 @@ const Header = () => {
     fetchData();
   }, [setLoading]);
 
-  return (<div className={`container flex justify-between pt-4 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+  return (<div className={`container flex justify-around pt-4 ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
     <BurgerButton onClick={handleOpenBurger} />
     <BurgerMenu isOpen={isBurgerOpen} onClose={handleCloseBurger} titleBurger="меню" />
     {loading ? (
