@@ -57,8 +57,9 @@ const Navigation = () => {
     };
   
     return (
-      <header className={`shadow ${isDarkMode ? 'bg-gray-800' : 'bg-white'} h-16 flex items-center`}>
-        <div className="container flex justify-between">
+      <div className="container_nav">
+<header className={` shadow ${isDarkMode ? 'bg-black' : 'bg-white'} h-16 flex items-center`}>
+        <div className="container  flex justify-between">
           {/* Левая часть с первыми пятью пунктами меню */}
           <nav className="flex items-center gap-5">
             {loading ? (
@@ -126,6 +127,8 @@ const Navigation = () => {
           </nav>
         </div>
       </header>
+      </div>
+      
     );
   };
   
