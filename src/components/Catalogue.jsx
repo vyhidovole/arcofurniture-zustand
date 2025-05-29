@@ -8,7 +8,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 /**
  * Компонент Catalogue отображает список продуктов.
  *
- * Этот компонент использует MobX для управления состоянием продуктов
+ * Этот компонент использует Zustand для управления состоянием продуктов
  * и контекст загрузки для отображения состояния загрузки во время
  * получения данных с сервера.
  *
@@ -55,8 +55,6 @@ const Catalogue = () => {
           src={item.imgSrc || '/path/to/default-image.jpg'}
           alt={item.name}
           className="absolute inset-0 w-full h-full object-cover"
-
-
         />
         <Link href={productLinks[item.name.toLowerCase()] || '/default'} passHref>
           <button

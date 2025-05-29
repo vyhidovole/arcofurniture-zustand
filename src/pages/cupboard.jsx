@@ -29,7 +29,7 @@ const Cupboard = () => {
   useEffect(() => {
     console.log("isShowAlert изменился на:", isShowAlert);
 }, [isShowAlert]);
-  // Получаем продукты из MobX store
+  // Получаем продукты из Zustand store
   const products = catalogueStore.products; // Предполагаем, что у вас есть массив продуктов
    /**
    * Функция для добавления товара в корзину.

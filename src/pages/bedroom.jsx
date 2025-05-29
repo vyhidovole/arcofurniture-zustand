@@ -6,7 +6,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import Alert from "@/components/ui/Alert/Alert";
 import { useCart } from '@/context/CartContext'; 
 /**
- * Компонент для отображения товаров в категории "Спальня".
+ * Компонент для отображения товаров в категории "Спальни".
  * Загружает и отображает список продуктов, а также позволяет добавлять их в корзину.
  *
  * @component
@@ -26,7 +26,7 @@ const Bedroom = () => {
   useEffect(() => {
     console.log("isShowAlert изменился на:", isShowAlert);
 }, [isShowAlert]);
-  // const { products, basket } = catalogueStore; // Получаем продукты и корзину из store
+  
   const products = catalogueStore.products; // Предполагаем, что у вас есть массив продуктов
   // Функция для добавления товара в корзину
   const handleAddToBasket = (item) => {

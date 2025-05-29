@@ -2,6 +2,7 @@ import { create } from 'zustand'
 
 // Создаем хранилище Zustand с помощью функции create, которая возвращает хук использования
 const useCatalogueStore = create((set, get) => ({
+    baseUrl: "http://localhost:3000",
     // Массив товаров, изначально пустой
     products: [], // Инициализируем массив товаров
     // Массив работы, изначально пустой
@@ -11,7 +12,17 @@ const useCatalogueStore = create((set, get) => ({
     // Количество выбранных товаров
     quantity: 0,
     
-    // Асинхронная функция для получения данных о продуктах по URL
+   
+    /**
+ * Асинхронная функция для получения данных о продуктах по указанному URL.
+ *
+ * @async
+ * @function getProducts
+ * @param {string} url - Путь к ресурсу, по которому будет отправлен запрос для получения данных о продуктах.
+ * @throws {Error} Выбрасывает ошибку, если запрос не удался или если сервер вернул ошибку HTTP.
+ *
+ * @returns {Promise<void>} Возвращает промис, который разрешается после обновления состояния с полученными данными о продуктах.
+ */
     getProducts: async (url) => {
         try {
             // Посылаем запрос на сервер, используя базовый URL из состояния и переданный путь
@@ -31,7 +42,7 @@ const useCatalogueStore = create((set, get) => ({
         }
     },
     // Базовый URL для API-запросов, по умолчанию установлен Localhost
-    baseUrl: "http://localhost:3000",
+    // baseUrl: "http://localhost:3000",
 
     getWorkItems: async (url) => {
         try {
@@ -46,7 +57,18 @@ const useCatalogueStore = create((set, get) => ({
         }
     },
     // Базовый URL для API-запросов, по умолчанию установлен Localhost
-    baseUrl: "http://localhost:3000",
+    /**
+ * Добавляет продукт в корзину. Если продукт уже есть в корзине, увеличивает его количество.
+ *
+ * @function addProductToBasket
+ * @param {Object} item - Объект продукта, который нужно добавить в корзину.
+ * @param {number} item.id - Уникальный идентификатор продукта.
+ * @param {string} item.name - Название продукта.
+ * @param {number} item.price - Цена продукта.
+ * @throws {Error} Если переданный объект не содержит необходимую информацию.
+ * 
+ * @returns {void} Не возвращает значения.
+ */
     addProductToBasket: (item) => {
         const { basket } = get();
         console.log("Добавляем продукт в корзину:", item);
@@ -83,7 +105,22 @@ const useCatalogueStore = create((set, get) => ({
     },// И затем в компоненте используйте хук таким образом:
 
     // const addProductToBasket = useBasketStore((state) => state.addProductToBasket);
+    
     // Метод для установки начального состояния корзины
+    /**
+ /**
+ * Устанавливает начальное состояние корзины на основе сохраненных данных.
+ *
+ * @function setBasket
+ * @param {Array<Object>} savedBasket - Массив объектов продуктов, представляющих сохраненное состояние корзины.
+ * @param {number} savedBasket.id - Уникальный идентификатор продукта.
+ * @param {string} savedBasket.name - Название продукта.
+ * @param {number} savedBasket.quantity - Количество продукта в корзине.
+ * 
+ * @returns {Object} Возвращает объект с обновленным состоянием корзины и счетчиком.
+ * @returns {Array<Object>} return.basket - Обновленный массив продуктов в корзине.
+ * @returns {number} return.count - Общее количество продуктов в корзине.
+ */
     setBasket: (savedBasket) => {
         // Обновляем состояние корзины и счетчик
         set((state) => {
@@ -97,6 +134,19 @@ const useCatalogueStore = create((set, get) => ({
 
 
     // Метод для увеличения количества товара
+    /**
+ * Увеличивает количество товара в корзине на 1.
+ *
+ * Этот метод принимает идентификатор товара и обновляет его количество в корзине.
+ * Если товар с указанным идентификатором не найден, корзина остается без изменений.
+ *
+ * @param {string} productId - Идентификатор товара, количество которого нужно увеличить.
+ *@returns {{ basket: Array }} - Возвращает обновленный объект состояния с новым массивом корзины.
+ *
+ * @example
+ * // Увеличить количество товара с идентификатором '123'
+ * incrementProductQuantity('123');
+ */
     incrementProductQuantity: (productId) => set((state) => {
         const basket = state.basket.map(item => {
             if (item.id === productId) {
@@ -111,7 +161,7 @@ const useCatalogueStore = create((set, get) => ({
 
     /**
      * Удаляет товар из корзины по его ID.
-     * @param {string} itemId - ID товара, который нужно удалить.
+     * @param {string} productId - ID товара, который нужно удалить.
      */
     deleteProductFromBasket: (productId) => {
         set(state => {
@@ -123,6 +173,16 @@ const useCatalogueStore = create((set, get) => ({
     },
 
     // Метод для уменьшения количества товара
+    /**
+ * Уменьшает количество товара в корзине по заданному идентификатору продукта.
+ * Если количество товара становится равным нулю, товар удаляется из корзины.
+ *
+ * @function decrementProductQuantity
+ * @param {number} productId - Уникальный идентификатор продукта, количество которого нужно уменьшить.
+ * 
+ * @returns {Object} Возвращает объект с обновленным состоянием корзины.
+ * @returns {Array<Object>} return.basket - Обновленный массив продуктов в корзине.
+ */
     decrementProductQuantity: (productId) => {
         set((state) => {
             const productIndex = state.basket.findIndex(item => item.id === productId);
