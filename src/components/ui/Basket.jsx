@@ -50,7 +50,7 @@ const Basket = () => {
           <ul >
             {catalogueStore.basket.map((item) => (
              
-              <Product key={item.id} item ={item}/>
+              <Product key={`${item.id}-${item.category}`} item ={item}/>
             ))}
           </ul>
 

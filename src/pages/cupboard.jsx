@@ -60,7 +60,7 @@ const Cupboard = () => {
   const renderData =
     catalogueStore.products.length > 0 &&
     catalogueStore.products.map((item) => (
-      <div key={item.id} className='relative border-2 border-blue-500 rounded-lg w-[250px] h-[300px] p-2'>
+      <div key={`${item.id}-${item.category}`} className='relative border-2 border-blue-500 rounded-lg w-[250px] h-[300px] p-2'>
         <img
           src={item.imgSrc || '/path/to/default-image.jpg'}
           alt={item.name}

@@ -15,19 +15,19 @@ const Product = ({ item }) => {
   const { name, category, color, price, imgSrc, id, quantity } = item;
 
   const handleIncrement = () => {
-    catalogueStore.incrementProductQuantity(id); // Увеличиваем количество в store
+    catalogueStore.incrementProductQuantity(item.id, item.category); // Увеличиваем количество в store
     addToCart()
   };
 
   const handleDecrement = () => {
     if (quantity > 1) {
-      catalogueStore.decrementProductQuantity(id); // Уменьшаем количество в store
+      catalogueStore.decrementProductQuantity(item.id, item.category); // Уменьшаем количество в store
       removeFromCart()
     }
   };
   const handleDeleteProduct = () => {
     deleteProduct(quantity); // Вызываем deleteProduct из контекста
-    catalogueStore.clearProduct(id); // Также вызываем метод из store для удаления товара
+    catalogueStore.clearProduct(item.id, item.category); // Также вызываем метод из store для удаления товара
   };
   const numericPrice = parseFloat(price); // Преобразуем в число
 
@@ -48,7 +48,7 @@ const Product = ({ item }) => {
                   width: '20px',
                   height: '20px',
                   backgroundColor: c,
-                  borderRadius: '10%', // Круглая форма для цвета
+                  borderRadius: '10%', 
                 }}
               ></div>
             ))

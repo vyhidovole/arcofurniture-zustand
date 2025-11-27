@@ -72,7 +72,7 @@ const useCatalogueStore = create((set, get) => ({
     addProductToBasket: (item) => {
         const { basket } = get();
         console.log("Добавляем продукт в корзину:", item);
-        const existingProductIndex = basket.findIndex(product => product.id === item.id);
+        const existingProductIndex = basket.findIndex(product => product.id === item.id && item.category === product.category);
         let newBasket;
 
         if (existingProductIndex !== -1) {
@@ -147,9 +147,9 @@ const useCatalogueStore = create((set, get) => ({
  * // Увеличить количество товара с идентификатором '123'
  * incrementProductQuantity('123');
  */
-    incrementProductQuantity: (productId) => set((state) => {
+    incrementProductQuantity: (productId, productCategory) => set((state) => {
         const basket = state.basket.map(item => {
-            if (item.id === productId) {
+            if (item.id === productId && item.category === productCategory) {
                 return { ...item, quantity: item.quantity + 1 };
             }
             return item;
@@ -163,9 +163,9 @@ const useCatalogueStore = create((set, get) => ({
      * Удаляет товар из корзины по его ID.
      * @param {string} productId - ID товара, который нужно удалить.
      */
-    deleteProductFromBasket: (productId) => {
+    deleteProductFromBasket: (productId, productCategory) => {
         set(state => {
-            const updatedBasket = state.basket.filter(item => item.id !== productId);
+            const updatedBasket = state.basket.filter(item => item.id !== productId || item.category !== productCategory);
             return { basket: updatedBasket };
         });
         get().updateCount();
@@ -183,9 +183,9 @@ const useCatalogueStore = create((set, get) => ({
  * @returns {Object} Возвращает объект с обновленным состоянием корзины.
  * @returns {Array<Object>} return.basket - Обновленный массив продуктов в корзине.
  */
-    decrementProductQuantity: (productId) => {
+    decrementProductQuantity: (productId, productCategory) => {
         set((state) => {
-            const productIndex = state.basket.findIndex(item => item.id === productId);
+            const productIndex = state.basket.findIndex(item => item.id === productId && item.category === productCategory);
             if (productIndex !== -1) {
                 const product = state.basket[productIndex];
                 if (product.quantity > 1) {
@@ -197,7 +197,7 @@ const useCatalogueStore = create((set, get) => ({
                     return { basket: updatedBasket };
                 } else if (product.quantity === 1) {
                     // Удаляем товар, если его количество равно 1
-                    const updatedBasket = state.basket.filter(item => item.id !== productId);
+                    const updatedBasket = state.basket.filter(item => item.id !== productId || item.category !== productCategory);
                     return { basket: updatedBasket };
                 }
             }
@@ -238,8 +238,8 @@ const useCatalogueStore = create((set, get) => ({
         }
     },
     // Удаление товара по id
-    clearProduct: (id) => {
-        const newBasket = get().basket.filter(item => item.id !== id);
+    clearProduct: (productId, productCategory) => {
+        const newBasket = get().basket.filter(item => item.id !== productId ||item.category !== productCategory);
         set({ basket: newBasket });
         get().updateCount();
         console.log("Корзина очищена");
