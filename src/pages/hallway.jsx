@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import useCatalogueStore from "@/store/CatalogueStore";
 import Alert from "@/components/ui/Alert/Alert";
-import { useCart } from '@/context/CartContext';
+
 
 /**
  * Компонент для отображения и управления товарами (прихожие).
@@ -19,13 +19,13 @@ import { useCart } from '@/context/CartContext';
 const Hallway = () => {
     const catalogueStore = useCatalogueStore();
     const { loading, setLoading } = useLoading(); // Получаем состояние загрузки
-    const { addToCart } = useCart(); // Используем контекст
+    
     // Стейт для закрытия компонента уведомления
     const [isShowAlert, setShowAlert] = useState(false);
     useEffect(() => {
         console.log("isShowAlert изменился на:", isShowAlert);
     }, [isShowAlert]);
-    // const { products, basket } = catalogueStore; // Получаем продукты и корзину из store
+    
     const products = catalogueStore.products; // Предполагаем, что у вас есть массив продуктов
     /**
      * Функция для добавления товара в корзину.
@@ -35,7 +35,7 @@ const Hallway = () => {
      */
     const handleAddToBasket = (item) => {
         catalogueStore.addProductToBasket(item); // Добавляем продукт в корзину
-        addToCart()
+        // addToCart()
         console.log(`${item.name} добавлен в корзину!`);
         setShowAlert(true); // Показываем алерт
         console.log("Показать алерт:", true); // Логируем изменение состояния

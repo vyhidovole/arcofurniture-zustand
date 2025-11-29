@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import useCatalogueStore from "@/store/CatalogueStore";
 import Alert from "@/components/ui/Alert/Alert";
-import { useCart } from '@/context/CartContext';
+
 /**
  * Компонент для отображения таблиц и стульев.
  * Загружает список продуктов, отображает их и позволяет добавлять в корзину.
@@ -18,7 +18,7 @@ import { useCart } from '@/context/CartContext';
 const Tables_and_chairs = () => {
     const catalogueStore = useCatalogueStore();
     const { loading, setLoading } = useLoading(); // Получаем состояние загрузки
-    const { addToCart } = useCart(); // Используем контекст
+    
     // Стейт для закрытия компонента уведомления
     const [isShowAlert, setShowAlert] = useState(false);
     useEffect(() => {
@@ -42,7 +42,7 @@ const Tables_and_chairs = () => {
        */
     const handleAddToBasket = (item) => {
         catalogueStore.addProductToBasket(item); // Добавляем продукт в корзину
-        addToCart()
+       
         console.log(`${item.name} добавлен в корзину!`);
         setShowAlert(true); // Показываем алерт
         console.log("Показать алерт:", true); // Логируем изменение состояния

@@ -1,32 +1,28 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { VscTrash } from "react-icons/vsc";
 import useCatalogueStore from "@/store/CatalogueStore";
-import { useCart } from '@/context/CartContext';
 
 
 const Product = ({ item }) => {
   const catalogueStore = useCatalogueStore();
 
-  const { addToCart, removeFromCart, deleteProduct } = useCart(); // Используем контекст
-  useEffect(() => {
-    catalogueStore.initializeBasket(); // Инициализация корзины после монтирования
-  }, []);
+  
 
   const { name, category, color, price, imgSrc, id, quantity } = item;
 
   const handleIncrement = () => {
     catalogueStore.incrementProductQuantity(item.id, item.category); // Увеличиваем количество в store
-    addToCart()
+    
   };
 
   const handleDecrement = () => {
     if (quantity > 1) {
       catalogueStore.decrementProductQuantity(item.id, item.category); // Уменьшаем количество в store
-      removeFromCart()
+     
     }
   };
   const handleDeleteProduct = () => {
-    deleteProduct(quantity); // Вызываем deleteProduct из контекста
+   
     catalogueStore.clearProduct(item.id, item.category); // Также вызываем метод из store для удаления товара
   };
   const numericPrice = parseFloat(price); // Преобразуем в число

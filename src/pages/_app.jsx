@@ -3,8 +3,9 @@ import "@/styles/globals.css";
 import MainLayout from "@/Layouts/MainLayout";
 import { LoadingProvider } from '@/context/LoadingContext';
 import MenuBar from "@/components/ui/MenuBar";
-import { ThemeProvider , useTheme } from '@/context/ThemeContext'; 
-import { CartProvider } from '@/context/CartContext';
+import { ThemeProvider, useTheme } from '@/context/ThemeContext';
+import useCatalogueStore from '@/store/CatalogueStore';
+// import { CartProvider } from '@/context/CartContext';
 
 /**
  * Компонент для управления темой приложения.
@@ -41,16 +42,20 @@ const ThemeManager = () => {
  * <App Component={MyPage} pageProps={myPageProps} />
  */
 const App = ({ Component, pageProps }) => {
+  const initializeBasket = useCatalogueStore((state) => state.initializeBasket);
+
+  useEffect(() => {
+    initializeBasket();  // Инициализируем сразу при монтировании App
+  }, [initializeBasket]);
+
   return (
     <LoadingProvider>
       <ThemeProvider>
-      <CartProvider>
-         <ThemeManager /> 
+        <ThemeManager />
         <MainLayout>
-           <MenuBar />
+          <MenuBar />
           <Component {...pageProps} />
         </MainLayout>
-        </CartProvider>
       </ThemeProvider>
     </LoadingProvider>
 

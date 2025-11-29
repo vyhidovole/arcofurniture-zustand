@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useCart } from '@/context/CartContext';
+// import { useCart } from '@/context/CartContext';
+import useCatalogueStore from "@/store/CatalogueStore";
 import { useTheme } from '@/context/ThemeContext';
 import Image from "next/image";
 import Link from "next/link";
@@ -34,7 +35,8 @@ import '@/components/Header.css';
  */
 const Header = () => {
   const { isDarkMode } = useTheme(); // Получаем доступ к теме
-  const { count } = useCart(); // Используем контекст
+  // const { count } = useCart(); // Используем контекст
+  const { quantity } = useCatalogueStore();
   const router = useRouter();
   const { loading, setLoading } = useLoading(); // Получаем состояние загрузки
   // Проверка, что router определён
@@ -236,7 +238,7 @@ const Header = () => {
           )}
           <p className="underline-animation ">{loading ? <Skeleton width={50} /> : "Корзина"}</p>
           <span className="absolute top-0 right-5 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-            {count} {/* Отображаем количество товаров в корзине */}
+            {quantity} {/* Отображаем количество товаров в корзине */}
           </span>
         </button>
       </div>

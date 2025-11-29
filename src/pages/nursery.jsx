@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import useCatalogueStore from "@/store/CatalogueStore";
 import Alert from "@/components/ui/Alert/Alert";
-import { useCart } from '@/context/CartContext';
+
 
 /**
  * Компонент для отображения товаров для детской комнаты.
@@ -19,7 +19,7 @@ import { useCart } from '@/context/CartContext';
 const Nursery = () => {
     const catalogueStore = useCatalogueStore();
     const { loading, setLoading } = useLoading(); // Получаем состояние загрузки
-    const { addToCart } = useCart(); // Используем контекст
+    
     // Стейт для закрытия компонента уведомления
     const [isShowAlert, setShowAlert] = useState(false);
     useEffect(() => {
@@ -30,7 +30,7 @@ const Nursery = () => {
     // Функция для добавления товара в корзину
     const handleAddToBasket = (item) => {
         catalogueStore.addProductToBasket(item); // Добавляем продукт в корзину
-        addToCart()
+        
         console.log(`${item.name} добавлен в корзину!`);
         setShowAlert(true); // Показываем алерт
         console.log("Показать алерт:", true); // Логируем изменение состояния

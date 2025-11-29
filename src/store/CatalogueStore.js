@@ -11,8 +11,8 @@ const useCatalogueStore = create((set, get) => ({
     basket: [], // Корзина
     // Количество выбранных товаров
     quantity: 0,
-    
-   
+
+
     /**
  * Асинхронная функция для получения данных о продуктах по указанному URL.
  *
@@ -88,24 +88,28 @@ const useCatalogueStore = create((set, get) => ({
             newBasket = [...basket, { ...item, quantity: 1 }];
             console.log(`Товар ${item.name} добавлен в корзину с количеством 1`);
         }
-
+        // Вычисляем quantity сразу на основе newBasket
+        const newQuantity = newBasket.reduce((total, product) => total + product.quantity, 0);
         // Обновляем состояние корзины
-        set({ basket: newBasket });
+        set({ basket: newBasket, 
+             quantity: newQuantity  // Обновляем синхронно!
+        });
         // Обновляем количество уникальных товаров
-        get().updateCount();
+       
         get().saveToLocalStorage();
     },
 
     loadFromLocalStorage: () => {
         const data = localStorage.getItem('basket');
         if (data) {
-            set({ basket: JSON.parse(data) });
-            get().updateCount();
+            const parsedBasket = JSON.parse(data);
+            set({ basket: parsedBasket });
+            // Пересчитываем quantity из basket
+            const newQuantity = parsedBasket.reduce((total, product) => total + product.quantity, 0);
+            set({ quantity: newQuantity });
         }
-    },// И затем в компоненте используйте хук таким образом:
+    },
 
-    // const addProductToBasket = useBasketStore((state) => state.addProductToBasket);
-    
     // Метод для установки начального состояния корзины
     /**
  /**
@@ -122,14 +126,13 @@ const useCatalogueStore = create((set, get) => ({
  * @returns {number} return.count - Общее количество продуктов в корзине.
  */
     setBasket: (savedBasket) => {
-        // Обновляем состояние корзины и счетчик
-        set((state) => {
-            console.log("Установка корзины:", savedBasket); // Отладочное сообщение
-            return {
-                basket: savedBasket,
-                count: savedBasket.reduce((sum, product) => sum + product.quantity, 0),
-            };
+        const newQuantity = savedBasket.reduce((sum, product) => sum + product.quantity, 0);
+        set({ 
+            basket: savedBasket,
+            quantity: newQuantity  // Обновляем сразу
         });
+        console.log("Установка корзины:", savedBasket);
+        get().saveToLocalStorage();
     },
 
 
@@ -147,29 +150,40 @@ const useCatalogueStore = create((set, get) => ({
  * // Увеличить количество товара с идентификатором '123'
  * incrementProductQuantity('123');
  */
-    incrementProductQuantity: (productId, productCategory) => set((state) => {
-        const basket = state.basket.map(item => {
-            if (item.id === productId && item.category === productCategory) {
-                return { ...item, quantity: item.quantity + 1 };
-            }
-            return item;
-        });
-        // Обновляем состояние с новым массивом корзины
-        get().updateCount();
-        return { basket };
-    }),
+     incrementProductQuantity: (productId, productCategory) => {
+         set((state) => {
+            const newBasket = state.basket.map(item => {
+                if (item.id === productId && item.category === productCategory) {
+                    return { ...item, quantity: item.quantity + 1 };
+                }
+                return item;
+            });
+            // Вычисляем quantity сразу
+            const newQuantity = newBasket.reduce((total, product) => total + product.quantity, 0);
+           
+            return { 
+                basket: newBasket,
+                quantity: newQuantity
+            };
+        })
+        get().saveToLocalStorage(); 
 
+     },
+       
     /**
      * Удаляет товар из корзины по его ID.
      * @param {string} productId - ID товара, который нужно удалить.
      */
     deleteProductFromBasket: (productId, productCategory) => {
-        set(state => {
-            const updatedBasket = state.basket.filter(item => item.id !== productId || item.category !== productCategory);
-            return { basket: updatedBasket };
+        set((state) => {
+            const newBasket = state.basket.filter(item => !(item.id === productId && item.category === productCategory));
+            const newQuantity = newBasket.reduce((total, product) => total + product.quantity, 0);
+            return { 
+                basket: newBasket,
+                quantity: newQuantity
+            };
         });
-        get().updateCount();
-        console.log("Товар удален из корзины");
+        get().saveToLocalStorage();
     },
 
     // Метод для уменьшения количества товара
@@ -189,69 +203,87 @@ const useCatalogueStore = create((set, get) => ({
             if (productIndex !== -1) {
                 const product = state.basket[productIndex];
                 if (product.quantity > 1) {
-                    const updatedBasket = [...state.basket];
-                    updatedBasket[productIndex] = {
-                        ...product,
-                        quantity: product.quantity - 1,
+                    const newBasket = [...state.basket];
+                    newBasket[productIndex] = { ...product, quantity: product.quantity - 1 };
+                    const newQuantity = newBasket.reduce((total, prod) => total + prod.quantity, 0);
+                    return { 
+                        basket: newBasket,
+                        quantity: newQuantity
                     };
-                    return { basket: updatedBasket };
-                } else if (product.quantity === 1) {
-                    // Удаляем товар, если его количество равно 1
-                    const updatedBasket = state.basket.filter(item => item.id !== productId || item.category !== productCategory);
-                    return { basket: updatedBasket };
+                } else {
+                    const newBasket = state.basket.filter(item => !(item.id === productId && item.category === productCategory));
+                    const newQuantity = newBasket.reduce((total, prod) => total + prod.quantity, 0);
+                    return { 
+                        basket: newBasket,
+                        quantity: newQuantity
+                    };
                 }
             }
-            return {};
+            return state;
         });
-        get().updateCount();
-        console.log("Количество товара уменьшено");
+        // После set вызываем save — теперь с фигурными скобками!
+        get().saveToLocalStorage();
     },
 
+
     // Обновление количества товаров в корзине
+    // Упрощенный updateCount — теперь редко нужен, но оставляем для совместимости
     updateCount: () => {
-        const totalQuantity = get().basket.reduce((total, product) => total + product.quantity, 0);
-        set({ count: totalQuantity });
-        console.log("Обновлено количество товаров в корзине:", totalQuantity);
+        const { basket } = get();
+        const totalQuantity = basket.reduce((total, product) => total + product.quantity, 0);
+        set({ quantity: totalQuantity });
+        console.log("Обновлено quantity:", totalQuantity);
     },
     // Сохраняет корзину и количество товаров в localStorage
-    saveToLocalStorage: () => {
+     saveToLocalStorage: () => {
         try {
             if (typeof window !== 'undefined') {
-                const { basket, quantity } = get();
+                const { basket } = get();
                 localStorage.setItem("basket", JSON.stringify(basket));
-                localStorage.setItem("quantity", quantity.toString());
-                console.log("Сохранено в localStorage:", basket, quantity);
+               
+                console.log("Сохранено в localStorage:", { basket });
             }
         } catch (error) {
             console.error("Ошибка при сохранении в localStorage:", error);
         }
     },
+
     // Инициализация корзины из localStorage
-    initializeBasket: () => {
-        if (typeof window !== 'undefined') { // Проверяем, что код выполняется в браузере
-            const savedBasket = JSON.parse(localStorage.getItem("basket")) || [];
-            set({ basket: savedBasket });
-            get().updateCount();
-            console.log("Корзина инициализирована:", savedBasket); // Отладочное сообщение
-        } else {
-            console.warn("localStorage недоступен, инициализация корзины не выполнена.");
-        }
-    },
-    // Удаление товара по id
-    clearProduct: (productId, productCategory) => {
-        const newBasket = get().basket.filter(item => item.id !== productId ||item.category !== productCategory);
-        set({ basket: newBasket });
-        get().updateCount();
-        console.log("Корзина очищена");
-        // Также можно обновлять localStorage
+     initializeBasket: () => {
         if (typeof window !== 'undefined') {
-            localStorage.setItem("basket", JSON.stringify(newBasket));
+            const savedBasket = localStorage.getItem("basket");
+            if (savedBasket) {
+                const parsedBasket = JSON.parse(savedBasket);
+                // Всегда пересчитываем quantity для consistency
+                const totalQuantity = parsedBasket.reduce((total, product) => total + (product.quantity || 0), 0);
+                set({ 
+                    basket: parsedBasket,
+                    quantity: totalQuantity 
+                });
+                console.log("Корзина инициализирована с пересчетом quantity:", { basket: parsedBasket, quantity: totalQuantity });
+            } else {
+                set({ basket: [], quantity: 0 });
+            }
+        } else {
+            console.warn("localStorage недоступен");
         }
+        localStorage.removeItem("quantity")
+    },
 
+    // Удаление товара по id
+      clearProduct: (productId, productCategory) => {
+        const { basket } = get();
+        const newBasket = basket.filter(item => !(item.id === productId && item.category === productCategory));
+        const newQuantity = newBasket.reduce((total, product) => total + product.quantity, 0);
+        set({ 
+            basket: newBasket,
+            quantity: newQuantity 
+        });
+        get().saveToLocalStorage(); 
+        console.log("Товар удален из корзины");
+    },
+}));
 
-    }
-
-}))
 
 
 

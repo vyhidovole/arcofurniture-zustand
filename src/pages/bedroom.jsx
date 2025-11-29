@@ -1,10 +1,10 @@
-import React, { useEffect,useState } from "react";
-import { useLoading } from '@/context/LoadingContext'; 
+import React, { useEffect, useState } from "react";
+import { useLoading } from '@/context/LoadingContext';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
- import useCatalogueStore from "@/store/CatalogueStore";
+import useCatalogueStore from "@/store/CatalogueStore";
 import Alert from "@/components/ui/Alert/Alert";
-import { useCart } from '@/context/CartContext'; 
+
 /**
  * Компонент для отображения товаров в категории "Спальни".
  * Загружает и отображает список продуктов, а также позволяет добавлять их в корзину.
@@ -17,37 +17,37 @@ import { useCart } from '@/context/CartContext';
  *   <Bedroom />
  * );
  */
-const Bedroom = () => { 
-    const catalogueStore = useCatalogueStore()
+const Bedroom = () => {
+  const catalogueStore = useCatalogueStore()
   const { loading, setLoading } = useLoading(); // Получаем состояние загрузки
-   const {  addToCart } = useCart(); // Используем контекст
+
   // Стейт для закрытия компонента уведомления
   const [isShowAlert, setShowAlert] = useState(false);
   useEffect(() => {
     console.log("isShowAlert изменился на:", isShowAlert);
-}, [isShowAlert]);
-  
+  }, [isShowAlert]);
+
   const products = catalogueStore.products; // Предполагаем, что у вас есть массив продуктов
   // Функция для добавления товара в корзину
   const handleAddToBasket = (item) => {
     catalogueStore.addProductToBasket(item); // Добавляем продукт в корзину
-    addToCart()
+    // addToCart()
     console.log(`${item.name} добавлен в корзину!`);
     setShowAlert(true); // Показываем алерт
     console.log("Показать алерт:", true); // Логируем изменение состояния
     setTimeout(() => {
       setShowAlert(false); // Скрываем алерт
-  }, 3000); 
-};
+    }, 3000);
+  };
   useEffect(() => {
     const url = '/Bedroom'; // Определяем конечный URL 
     setLoading(true); // Устанавливаем состояние загрузки в true
     catalogueStore.getProducts(url).finally(() => {
-         setLoading(false); // Устанавливаем состояние загрузки в false после завершения запроса
-       });
-     }, [setLoading]);
- 
- 
+      setLoading(false); // Устанавливаем состояние загрузки в false после завершения запроса
+    });
+  }, [setLoading]);
+
+
   // Итерация по данным и отрисовка карточек
   const renderData =
     catalogueStore.products.length > 0 &&
@@ -87,29 +87,29 @@ const Bedroom = () => {
         <p>{item.price || 'Нет цены'}</p>
         <button
           className="text-white bg-sky-800   px-6 py-1 rounded-sm "
-           onClick={() => handleAddToBasket(item)} >
+          onClick={() => handleAddToBasket(item)} >
           купить
         </button>
       </div>
     ));
-    console.log("Текущая корзина:", catalogueStore.basket);
-    console.log(catalogueStore.products); // Логируем продукты для отладки
-    console.log("Количество уникальных товаров в корзине:", catalogueStore.quantity); // Логируем количество уникальных товаров
+  console.log("Текущая корзина:", catalogueStore.basket);
+  console.log(catalogueStore.products); // Логируем продукты для отладки
+  console.log("Количество уникальных товаров в корзине:", catalogueStore.quantity); // Логируем количество уникальных товаров
 
-    return (
-      <>
+  return (
+    <>
       <div className="grid grid-cols-2 gap-6 relative lg:grid lg:grid-cols-4 lg:gap-6 ">
-                   {loading ? (
-                      // Отображение Skeleton, пока данные загружаются
-                      Array.from({ length: 8 }).map((_, index) => (
-                 <div key={index} className='relative border-2 border-blue-500 rounded-lg w-[250px] h-[300px] overflow-hidden'>
-                  <Skeleton height="100%" />
-                  </div>
-                ))
-              ) :(
-                renderData
-              )}
-                 </div>   
+        {loading ? (
+          // Отображение Skeleton, пока данные загружаются
+          Array.from({ length: 8 }).map((_, index) => (
+            <div key={index} className='relative border-2 border-blue-500 rounded-lg w-[250px] h-[300px] overflow-hidden'>
+              <Skeleton height="100%" />
+            </div>
+          ))
+        ) : (
+          renderData
+        )}
+      </div>
       {isShowAlert && (
         <Alert
           variant="positive"
@@ -119,9 +119,9 @@ const Bedroom = () => {
           <p>Товар добавлен в корзину!</p>
         </Alert>
       )}
-     </>
-      
-    );
-  };
-  
-  export default Bedroom;
+    </>
+
+  );
+};
+
+export default Bedroom;
