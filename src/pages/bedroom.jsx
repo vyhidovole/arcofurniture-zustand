@@ -31,7 +31,7 @@ const Bedroom = () => {
   // Функция для добавления товара в корзину
   const handleAddToBasket = (item) => {
     catalogueStore.addProductToBasket(item); // Добавляем продукт в корзину
-    // addToCart()
+   
     console.log(`${item.name} добавлен в корзину!`);
     setShowAlert(true); // Показываем алерт
     console.log("Показать алерт:", true); // Логируем изменение состояния
