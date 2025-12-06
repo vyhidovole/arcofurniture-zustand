@@ -20,7 +20,7 @@ import{useTheme} from '@/context/ThemeContext';
  * );
  */
 const SearchInput = () => {
-    const {isDarkMode} = useTheme
+    const {isDarkMode} = useTheme()
     // Инициализируем состояние для хранения введённого текста в поле поиска
     const [searchTerm, setSearchTerm] = useState('');
     const { loading } = useLoading(); // Получаем состояние загрузки из useLoading
@@ -64,20 +64,23 @@ const SearchInput = () => {
                         className="hidden lg:block lg:border rounded p-1 w-full"
                     />
                     {searchTerm && ( // Показываем список только если есть текст в поле поиска
-                        <ul className="lg:absolute left-0 right-0  border border-gray-300 z-10 mt-1 rounded shadow-lg">
-                            {filteredItems.length > 0 ? ( // Проверяем, есть ли отфильтрованные элементы
-                                filteredItems.map((item, index) => ( // Проходим по отфильтрованным элементам
-                                    <li key={index} className={`p-2 hover:bg-gray-200 cursor-pointer ${isDarkMode?'bg-gray-700':'bg-gray-100'}`}>
-                                        <Link href={item.path} className="block w-full h-full" onClick={reSetSearch}> {/* Ссылка на страницу по пути */}
-                                            {item.name} {/* Название элемента */}
-                                        </Link>
-                                    </li>
-                                ))
-                            ) : (
-                                <li className={`p-2 ${isDarkMode?'bg-gray-700':'bg-gray-100'}`}>Ничего не найдено</li>
-                            )}
-                        </ul>
-                    )}
+    <ul className="lg:absolute left-0 right-0 border border-gray-300 z-10 mt-1 rounded shadow-lg">
+        {filteredItems.length > 0 ? ( // Проверяем, есть ли отфильтрованные элементы
+            filteredItems.map((item, index) => ( // Проходим по отфильтрованным элементам
+                <li key={index} className={`p-2 cursor-pointer ${isDarkMode ? 'search-item-dark' : 'search-item-light'}`}> {/* Убираем hover:bg-gray-200 и text-black; добавляем условный класс для темы */}
+                    <Link href={item.path} className="block w-full h-full" onClick={reSetSearch}> {/* Ссылка на страницу по пути */}
+                        {item.name} {/* Название элемента */}
+                    </Link>
+                </li>
+            ))
+        ) : (
+            <li className={`p-2 ${isDarkMode ? 'search-item-dark' : 'search-item-light'}`}> {/* Применяем тот же условный класс для всего листа, чтобы цвет текста и фона адаптировался к теме */}
+                Ничего не найдено
+            </li>
+        )}
+    </ul>
+)}
+
                 </>
             )}
         </div>
