@@ -123,7 +123,7 @@ const ModalCall = ({ isOpen, onClose, setNewForm }) => {
                         </div>
                         <div className="border-b border-gray-300 pb-2 w-full"></div>
                         {/* Содержание Модального окна */}
-                        <div className="flex flex-col">
+                        <div className={`flex flex-col ${isDarkMode?'dark-mode text-white':'light-mode text-black'}`}>
                             <div className="flex mt-7 ">
                                 <svg
                                     data-slot="icon"
