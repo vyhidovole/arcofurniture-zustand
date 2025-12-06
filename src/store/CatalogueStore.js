@@ -26,7 +26,7 @@ const useCatalogueStore = create((set, get) => ({
     getProducts: async (url) => {
         try {
             // Посылаем запрос на сервер, используя базовый URL из состояния и переданный путь
-            const response = await fetch(`${useCatalogueStore.getState().baseUrl}${url}`);
+            const response = await fetch(`${get().baseUrl}${url}`);
             // Проверка, успешно ли прошел запрос
             if (!response.ok) {
                 // Если есть ошибка, выбрасываем исключение с информацией о статусе
@@ -46,7 +46,7 @@ const useCatalogueStore = create((set, get) => ({
 
     getWorkItems: async (url) => {
         try {
-            const response = await fetch(`${useCatalogueStore.getState().baseUrl}${url}`);
+            const response = await fetch(`${get().baseUrl}${url}`);
             if (!response.ok) {
                 throw new Error(`Ошибка HTTP: ${response.status}`);
             }
