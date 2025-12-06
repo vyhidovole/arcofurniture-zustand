@@ -21,7 +21,27 @@
   --background: #ffffff; /* Светлый фон */
   --foreground: #171717; /* Темный текст */
 }
+/* Классы для светлой темы */
+.search-item-light {
+  background-color: var(--background); /* #ffffff по умолчанию */
+  color: var(--foreground); /* #171717 по умолчанию */
+  transition: background-color 0.2s ease; /* Для плавного hover */
+}
 
+.search-item-light:hover {
+  background-color: #f0f0f0; /* Легкий серый hover для светлой темы */
+}
+
+/* Классы для тёмной темы */
+.search-item-dark {
+  background-color: var(--background); /* #0a0a0a */
+  color: var(--foreground); /* #ededed */
+  transition: background-color 0.2s ease; /* Для плавного hover */
+}
+
+.search-item-dark:hover {
+  background-color: #1a1a1a; /* Тёмно-серый hover для тёмной темы */
+}
 body {
   background: var(--background);
   color: var(--foreground);
