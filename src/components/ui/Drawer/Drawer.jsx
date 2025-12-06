@@ -11,7 +11,7 @@ import Basket from "../Basket";
  * @param {Object} props - Свойство компонента. 
  * @param {boolean} props.isOpen - Флаг, указывающий открыта/закрыта панель. 
  * @param {Function} props.onClose - Функуция обратного вызова при закрытии панели. 
- * @param {ReactNode} pops.children - Дочерние элементы панели. 
+ * @param {ReactNode} props.children - Дочерние элементы панели. 
  * @param {string} props.titleDrawer - Заголовок панели. 
  */
 export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
@@ -21,7 +21,7 @@ export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
      * Функция для закрытия панели. 
      * @type {Function}
      */
-    const closeDrower = useCallback(() => {
+    const closeDrawer = useCallback(() => {
         onClose();
     }, [onClose]);
 
@@ -33,10 +33,10 @@ export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
     const handleClick = useCallback(
         (event) => {
             if (drawerRef.current && !drawerRef.current.contains(event.target)) {
-                closeDrower();
+                closeDrawer();
             }
         },
-        [drawerRef, closeDrower]
+        [drawerRef, closeDrawer]
     );
     /**
      * Добавляет или удаляет обработчик клика вне панели при открытии или закрытии панели. 
@@ -46,7 +46,7 @@ export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
         return () => {
             document.removeEventListener("mousedown", handleClick);
         };
-    }, [handleClick])
+    }, [handleClick, isOpen])
 
     return (
         isOpen &&
@@ -59,7 +59,7 @@ export const Drawer = ({ isOpen, onClose, titleDrawer }) => {
                     <header className="flex justify-between mb-4">
                         <h2 className="text-xl font-bolt">{titleDrawer}</h2>
                         <button
-                            onClick={closeDrower}
+                            onClick={closeDrawer}
                             className="text-gray-600 hover:text-gray-800"
                         >
                             <LiaTimesSolid />
