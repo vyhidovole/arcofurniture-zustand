@@ -98,7 +98,7 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
                 setShowAlert(false)
             }, 3000)
         }
-        setIsLoading(false); // Сбрасываем состояние загрузки (убрал дубли)
+        setIsLoading(false); // Сбрасываем состояние загрузки 
     };
 
     const handleCloseAlert = () => {
