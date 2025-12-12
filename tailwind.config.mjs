@@ -1,12 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 
 const config = {
+  
   content: [
         "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/Modal/**/*.{js,ts,jsx,tsx,mdx}",
       ],
+      darkMode: 'class', // 'class' — добавляет 'dark' как класс на <html>
       theme: {
         extend: {
            

@@ -30,7 +30,7 @@ import Button from "../Button/Button";
  * );
  */
 const ModalEntry = ({ show, onClose, setNewForm }) => {
-    const { isDarkMode } = useTheme(); // Получаем доступ к теме
+    const { isDarkMode, toggleTheme } = useTheme(); // toggleTheme можно использовать для отладки, но не обязательно
     const { formData, errors, handleChange, handleSubmit, resetForm } = useForm(
         {
             name: "",
@@ -40,7 +40,6 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
         setNewForm
     );
 
-
     const dialogRef = useRef(null);
     const [isShowAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
@@ -49,10 +48,10 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
 
     useEffect(() => {
         if (show) {
-            dialogRef.current.show();
+            dialogRef.current?.show();
             document.addEventListener("mousedown", handleBackgroundClick);
         } else {
-            dialogRef.current.close();
+            dialogRef.current?.close();
             document.removeEventListener("mousedown", handleBackgroundClick);
         }
 
@@ -70,7 +69,6 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
             onClose(); // Close the modal
         }
     };
-
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -91,8 +89,6 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
                 setShowAlert(false);
                 onClose();
             }, 3000);
-            setIsLoading(false); // Сбрасываем состояние загрузки
-
         } else {
             // Устанавливаем сообщение и показываем Alert
             setAlertMessage("Данные введены не корректно.");
@@ -101,11 +97,8 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
             setTimeout(() => {
                 setShowAlert(false)
             }, 3000)
-            setIsLoading(false); // Сбрасываем состояние загрузки
-            return
-
         }
-
+        setIsLoading(false); // Сбрасываем состояние загрузки (убрал дубли)
     };
 
     const handleCloseAlert = () => {
@@ -113,61 +106,73 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
     };
     const isFormValid = Object.keys(errors).length === 0 && formData.name && formData.email && formData.password;
 
-
     console.log("Form Data:", formData);
     console.log("Errors:", errors);
     console.log("Is Form Valid:", isFormValid);
 
-
     return (
         <div
-            className={`fixed inset-0 bg-black/50 flex justify-center z-10 items-center ${show ? "block" : "hidden"}`}
+            className={`fixed inset-0 flex justify-center z-10 items-center ${show ? "block" : "hidden"}`} // Изменено: Убрал bg-классы, добавил style для оверлея
+            style={{ backgroundColor: 'var(--bg-overlay)' }}
             onClick={handleBackgroundClick} // Добавляем обработчик клика
         >
-            <dialog ref={dialogRef} >
+            <dialog ref={dialogRef}>
                 <form onSubmit={handleFormSubmit} method="dialog">
                     <div
-                        className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} p-4 shadow-lg w-11/12 md:w-3/4 lg:w-72 h-auto flex flex-col rounded-xs`}
+                        className="p-4 w-11/12 md:w-3/4 lg:w-72 h-auto flex flex-col rounded-xs" // Изменено: Убрал bg, text, shadow-классы
+                        style={{ 
+                            backgroundColor: 'var(--bg-modal)', 
+                            color: 'var(--text-modal)',
+                            boxShadow: 'var(--shadow-modal)' // Тень через var
+                        }}
                         onClick={(e) => e.stopPropagation()} // Останавливаем всплытие клика на модалке
                     >
                         {/* Заголовок Модального окна */}
-                        <div className="bottom-4 text-4xl ml-16">
-                            <h1 className="font-bold">Войти</h1>
+                        <div className="bottom-4 text-4xl ml-16"> {/* Изменено: Убрал text-классы (наследуется от родителя) */}
+                            <h1 className="font-bold">Войти</h1> {/* Изменено: Убрал text-классы */}
                         </div>
 
                         {/* Содержание Модального окна */}
                         <Input
-                            className={errors.name ? "border-red-500" : ""}
+                            className="" // Изменено: Убрал border-классы; используйте проп ниже
                             label="Name"
                             type="text"
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
                             error={errors.name}
+                            
                         />
 
                         <Input
-                            className={errors.email ? "border-red-500" : ""}
+                            className=""
                             label="Email"
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
                             error={errors.email}
+                            
                         />
 
                         <Input
-                            className={errors.password ? "border-red-500" : ""}
+                            className=""
                             label="Password"
                             type="password"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            // onBlur={handleBlur} // Используем обработчик из useForm
                             error={errors.password}
+                           
                         />
-                        <Link href="/forgot-password" className="mt-6 cursor-pointer" onClick={onClose}>
-                            <p className={`${isDarkMode? 'dark-mode text-gray-500':'light-mode text-black'}`} >Забыли пароль?</p>
+                        
+                        <Link 
+                            href="/forgot-password" 
+                            className="mt-6 cursor-pointer hover:text-gray-700 dark:hover:text-gray-400" // Изменено: Убрал основные text-классы, оставил hover
+                            style={{ color: 'var(--link-text-dark)' }} // Цвет через var (адаптирован под dark по умолчанию, но меняется с .dark)
+                            onClick={onClose}
+                        >
+                            <p>Забыли пароль?</p>
                         </Link>
 
                         <Button
@@ -175,8 +180,8 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
                             variant="secondary"
                             disabled={!isFormValid} // Делаем кнопку недоступной, если форма не валидна
                             isLoading={isLoading} // Передаём состояние загрузки
-                            className={`${isDarkMode? 'dark-mode text-gray-500':'light-mode text-black'}`}
-                            
+                            // Если Button не поддерживает темы, добавьте style={{ backgroundColor: 'var(--bg-button)', color: 'var(--text-button)' }}
+                            // И определите --bg-button, --text-button в CSS
                         >
                             Отправить
                         </Button>
@@ -186,6 +191,9 @@ const ModalEntry = ({ show, onClose, setNewForm }) => {
                                 variant={alertVariant}
                                 isOpen={isShowAlert}
                                 onClose={handleCloseAlert}
+                                // Изменено: Для Alert добавьте style={{ backgroundColor: 'var(--bg-modal)', color: 'var(--text-modal)' }}
+                                // Или обновите Alert.jsx: используйте vars в его стилях (bg-white dark:bg-gray-800 -> var(--bg-alert) и т.д.)
+                                style={{ backgroundColor: 'var(--bg-modal)', color: 'var(--text-modal)' }}
                             >
                                 {alertMessage}
                             </Alert>

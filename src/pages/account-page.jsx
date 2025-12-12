@@ -92,7 +92,7 @@ const Account = (setNewState) => {
                 onSubmit={handleFormSubmit}
                 method="dialog"
                 className="flex flex-col sm:flex-row lg:flex-wrap">
-                <div className="inline-flex flex-col m-6">
+                <div className="inline-flex flex-col m-6 w-52">
                     
                     <Input
                         className={errors.name ? "border-red-500" : ""}
@@ -104,7 +104,7 @@ const Account = (setNewState) => {
                         error={errors.name}
                     />
                 </div>
-                <div className="inline-flex flex-col m-6">
+                <div className="inline-flex flex-col m-6 w-52">
                    
                     <Input
                         className={errors.phone ? "border-red-500" : ""}
@@ -116,7 +116,7 @@ const Account = (setNewState) => {
                         error={errors.phone}
                     />
                 </div>
-                <div className="inline-flex flex-col m-6">
+                <div className="inline-flex flex-col m-6 w-52">
                     
                     <Input
                         className={errors.email ? "border-red-500" : ""}
@@ -128,7 +128,7 @@ const Account = (setNewState) => {
                         error={errors.email}
                     />
                 </div>
-                <div className="inline-flex flex-col m-6">
+                <div className="inline-flex flex-col m-6 w-52">
                    
                     <Input
                         className={errors.password ? "border-red-500" : ""}
@@ -140,7 +140,7 @@ const Account = (setNewState) => {
                         error={errors.password}
                     />
                 </div>
-                <div className="inline-flex flex-col m-6">
+                <div className="inline-flex flex-col m-6 w-52">
                     
                         <Input
                     className={errors.password ? "border-red-500" : ""}

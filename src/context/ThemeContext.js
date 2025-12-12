@@ -1,15 +1,55 @@
-// import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from 'react';
+
+const ThemeContext = createContext();
+
+export const ThemeProvider = ({ children }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('isDarkMode') === 'true';
+    setIsDarkMode(savedTheme);
+    applyTheme(savedTheme);
+  }, []);
+
+  const applyTheme = (darkMode) => {
+    document.documentElement.classList.toggle('dark', darkMode); // Добавляет/убирает 'dark' на <html>
+    console.log('HTML classes:', document.documentElement.className); // Для диагностики
+  };
+
+  const toggleTheme = () => {
+    setIsDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      console.log('Текущая тема:', newMode ? 'Темная' : 'Светлая');
+      localStorage.setItem('isDarkMode', newMode);
+      applyTheme(newMode);
+      return newMode;
+    });
+  };
+
+  return (
+    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export const useTheme = () => {
+  return useContext(ThemeContext);
+};
+
+
+//  import React, { createContext, useContext, useState, useEffect } from "react";
 
 // /**
-//  * 
+//  *
 //  * Провайдер для контекста темы.
 //  * Оборачивает дочерниек компоненты и предоставляет им доступ к состоянию темы(светлая/тёмная).
-//  * 
+//  *
 //  * @component
 //  * @param {Object} props - Свойства компонента.
 //  * @param {React.ReactNode} props.children - Дочерние компоненты которые будут иметь доступ к контексту.
 //  * @returns {JSX.Element} Элемент, представляющий провайдер контекста темы.
-//  * 
+//  *
 //  * @example
 //  * <ThemeProvider>
 //  * <MyComponent>
@@ -59,45 +99,47 @@
 // }
 // /**
 //  * Хук для использования контекста темы.
-//  * 
+//  *
 //  * @returns {Object} Объект с состоянием темы и методом для переключения
 //  * @returns {boolean} isDarkMode - Состояние темы(true, если темный режим активен).
 //  * @returns {Function} toggleTheme - Метод для переключения темы
-//  * 
+//  *
 //  * @example
 //  * const {isDarkMode,setIsDarkMode}= useTheme();
 //  */
 // export const useTheme = ()=>{
 //     return useContext(ThemeContext);
 // };
-import React, { createContext, useContext, useEffect, useState } from 'react';
 
-const ThemeContext = createContext();
 
-export const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+// import React, { createContext, useContext, useEffect, useState } from 'react';
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('isDarkMode') === 'true';
-    setIsDarkMode(savedTheme);
-  }, []);
+// const ThemeContext = createContext();
 
-  const toggleTheme = () => {
-    setIsDarkMode((prevMode) => {
-      const newMode = !prevMode;
-       console.log('Текущая тема:', newMode ? 'Темная' : 'Светлая');
-      localStorage.setItem('isDarkMode', newMode);
-      return newMode;
-    });
-  };
+// export const ThemeProvider = ({ children }) => {
+//   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
+//   useEffect(() => {
+//     const savedTheme = localStorage.getItem('isDarkMode') === 'true';
+//     setIsDarkMode(savedTheme);
+//   }, []);
 
-export const useTheme = () => {
-  return useContext(ThemeContext);
-};
+//   const toggleTheme = () => {
+//     setIsDarkMode((prevMode) => {
+//       const newMode = !prevMode;
+//        console.log('Текущая тема:', newMode ? 'Темная' : 'Светлая');
+//       localStorage.setItem('isDarkMode', newMode);
+//       return newMode;
+//     });
+//   };
+
+//   return (
+//     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+//       {children}
+//     </ThemeContext.Provider>
+//   );
+// };
+
+// export const useTheme = () => {
+//   return useContext(ThemeContext);
+// };
