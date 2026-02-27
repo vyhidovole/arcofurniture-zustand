@@ -57,9 +57,9 @@ const Navigation = () => {
     };
   
     return (
-      <div className="container_nav">
+      <div className="container_nav pl-5">
 <header className={` shadow ${isDarkMode ? 'bg-black' : 'bg-white'} h-16 flex items-center`}>
-        <div className="container  flex justify-between">
+        <div className="container  flex justify-around">
           {/* Левая часть с первыми пятью пунктами меню */}
           <nav className="flex items-center gap-5">
             {loading ? (

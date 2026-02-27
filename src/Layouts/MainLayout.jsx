@@ -11,7 +11,7 @@ const MainLayout = ({children}) => {
     <main>
       <Navigation />
       <Header/>
-      <div className={`container p-4  ${isDarkMode ? 'bg-gray-800' : 'bg-gray-400'}`}>{children}</div>
+      <div className={`container p-4 ml-32 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-400'}`}>{children}</div>
       <Footer/>
     </main>
   );
